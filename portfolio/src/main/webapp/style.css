@@ -2,8 +2,25 @@
   margin-left: auto;
   margin-right: auto;
   width: 650px;
+  font-family: Geneva;
 }
 
-#greeting-container {
+#quote-container {
   margin-top: 20px;
+  width: 500px;
+  background-color: azure;
+  color: darkolivegreen;
+  font-family: Verdana;
+}
+
+.button {
+    padding: 15px 32px;
+    color: gray;
+    font-size: 30px;
+    font-family: Verdana;
+}
+
+.button:hover {
+    background-color: darkgray;
+    color: white;
 }
