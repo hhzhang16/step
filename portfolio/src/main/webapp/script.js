@@ -15,14 +15,24 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+function addRandomQuote() {
+//   const greetings =
+//       ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+  const quotes = [
+    '"It\'s fine to celebrate success but it is more important to heed the lessons of failure." - Bill Gates',
+    '"There are no secrets to success. It is the result of preparation, hard work, and learning from failure." - Colin Powell',
+    '"One child, one teacher, one book, one pen can change the world." - Malala Yousafzai',
+    '"Live as if you were to die tomorrow. Learn as if you were to live forever." - Mahatma Gandhi',
+    '"Do right. Do your best. Treat others as you want to be treated." - Lou Holtz',
+    '"Just do the best you can. No one can do more than that." - John Wooden',
+    '"I\'ve learned you are never too small to make a difference." - Greta Thunberg'
+  ];
 
   // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  console.log(quote);
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const quoteContainer = document.getElementById('quote-container');
+  quoteContainer.innerText = quote;
 }
