@@ -15,7 +15,7 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomQuote() {
+function addQuote() {
 //   const greetings =
 //       ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
   const quotes = [
@@ -27,12 +27,19 @@ function addRandomQuote() {
     '"Just do the best you can. No one can do more than that." - John Wooden',
     '"I\'ve learned you are never too small to make a difference." - Greta Thunberg'
   ];
+  console.log("Creating a greeting");
 
   // Pick a random greeting.
   const quote = quotes[Math.floor(Math.random() * quotes.length)];
   console.log(quote);
 
   // Add it to the page.
-  const quoteContainer = document.getElementById('quote-container');
+  const quoteContainer = document.getElementById('greeting-container');
   quoteContainer.innerText = quote;
+}
+
+function greetSelf() {
+  fetch('/data').then(response => response.text()).then((data) => {
+    document.getElementById('data-container').innerHTML = data;
+  });
 }
