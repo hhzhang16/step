@@ -15,7 +15,7 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomQuote() {
+function addQuote() {
 //   const greetings =
 //       ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
   const quotes = [
@@ -27,12 +27,34 @@ function addRandomQuote() {
     '"Just do the best you can. No one can do more than that." - John Wooden',
     '"I\'ve learned you are never too small to make a difference." - Greta Thunberg'
   ];
+  console.log("Creating a greeting");
 
   // Pick a random greeting.
   const quote = quotes[Math.floor(Math.random() * quotes.length)];
   console.log(quote);
 
   // Add it to the page.
-  const quoteContainer = document.getElementById('quote-container');
+  const quoteContainer = document.getElementById('greeting-container');
   quoteContainer.innerText = quote;
+}
+
+function greetSelf() {
+  console.log("fetching data");
+  fetch('/data').then(response => response.json()).then((data) => {
+    console.log(data);
+    console.log(data.cs);
+    const dataListElement = document.getElementById('data-container');
+    dataListElement.innerHTML = '';
+    dataListElement.appendChild(createListElement(data.cs));
+    dataListElement.appendChild(createListElement(data.ling));
+    dataListElement.appendChild(createListElement(data.psych));
+    dataListElement.appendChild(createListElement(data.phil));
+  });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }

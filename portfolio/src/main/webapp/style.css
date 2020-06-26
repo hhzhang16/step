@@ -5,12 +5,17 @@
   font-family: Gill Sans MT;
 }
 
-#quote-container {
+#greeting-container {
   margin-top: 20px;
   width: 500px;
   background-color: azure;
   color: darkolivegreen;
   font-family: Verdana;
+}
+
+#data-container {
+    margin-bottom: 20px;
+    margin-top: 5px;
 }
 
 .button {

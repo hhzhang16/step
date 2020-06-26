@@ -6,15 +6,18 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="greetSelf()">
     <div id="content">
       <h1>Hannah's Portfolio</h1>
       <p>This is Hannah's STEP portfolio! <a href="https://github.com/hhzhang16">Here</a> is her GitHub profile and 
         <a href="https://www.linkedin.com/in/hannahzhang16">here</a> is her LinkedIn!</p>
-      <button onclick="addRandomQuote()" class="button">Click here to get a random quote!</button>
-      <div id="quote-container"></div>
+      <button onclick="addQuote()" class="button">Click here to get a random quote!</button>
+      <div id="greeting-container"></div>
       <p>Hannah is a big fan of food, like the dessert shown below (which was really good):</p>
       <img src="/images/food.jpg">
+      <p>Hannah's major is Symbolic Systems, which ties together</p>
+      <!-- <button onclick="greetSelf()">click here to find out!</button> -->
+      <ul id="data-container"></ul>
     </div>
   </body>
 </html>
