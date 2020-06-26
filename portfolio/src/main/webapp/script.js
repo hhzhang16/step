@@ -39,7 +39,22 @@ function addQuote() {
 }
 
 function greetSelf() {
-  fetch('/data').then(response => response.text()).then((data) => {
-    document.getElementById('data-container').innerHTML = data;
+  console.log("fetching data");
+  fetch('/data').then(response => response.json()).then((data) => {
+    console.log(data);
+    console.log(data.cs);
+    const dataListElement = document.getElementById('data-container');
+    dataListElement.innerHTML = '';
+    dataListElement.appendChild(createListElement(data.cs));
+    dataListElement.appendChild(createListElement(data.ling));
+    dataListElement.appendChild(createListElement(data.psych));
+    dataListElement.appendChild(createListElement(data.phil));
   });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
