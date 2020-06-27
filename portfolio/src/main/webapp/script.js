@@ -25,7 +25,8 @@ function addQuote() {
     '"Live as if you were to die tomorrow. Learn as if you were to live forever." - Mahatma Gandhi',
     '"Do right. Do your best. Treat others as you want to be treated." - Lou Holtz',
     '"Just do the best you can. No one can do more than that." - John Wooden',
-    '"I\'ve learned you are never too small to make a difference." - Greta Thunberg'
+    '"I\'ve learned you are never too small to make a difference." - Greta Thunberg',
+    '"Start where you are, use what you have, do what you can." - Arthur Ashe'
   ];
   console.log("Creating a greeting");
 
@@ -43,12 +44,24 @@ function greetSelf() {
   fetch('/data').then(response => response.json()).then((data) => {
     console.log(data);
     console.log(data.cs);
-    const dataListElement = document.getElementById('data-container');
+    const dataListElement = document.getElementById('symsys-container');
     dataListElement.innerHTML = '';
     dataListElement.appendChild(createListElement(data.cs));
     dataListElement.appendChild(createListElement(data.ling));
     dataListElement.appendChild(createListElement(data.psych));
     dataListElement.appendChild(createListElement(data.phil));
+  });
+}
+
+function getComments() {
+  fetch('/data').then(response => response.json()).then((comments) => {
+    console.log(comments);
+    // Build the list of history entries.
+    const commentElement = document.getElementById('data-container');
+    comments.history.forEach((line) => {
+      console.log(line);
+      commentElement.appendChild(createListElement(line));
+    });
   });
 }
 
