@@ -13,6 +13,9 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -28,7 +31,18 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //ArrayList<String> funFacts = createFacts();
+    // DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    // PreparedQuery comments = datastore.prepare(query);
+
+    // List<Task> tasks = new ArrayList<>();
+    // for (Entity entity : results.asIterable()) {
+    //   long id = entity.getKey().getId();
+    //   String title = (String) entity.getProperty("title");
+    //   long timestamp = (long) entity.getProperty("timestamp");
+
+    //   Task task = new Task(id, title, timestamp);
+    //   tasks.add(task);
+    // }
     String json = convertToJson(commentHistory);
     response.setContentType("application/json;");
     response.getWriter().println(json);
@@ -38,7 +52,13 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter("name");
     String comment = request.getParameter("comment");
-    commentHistory.add(name + "said : \"" + comment "\"");
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("comment", comment);
+
+    // Store comment permanently
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
 
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");
@@ -69,13 +89,6 @@ public class DataServlet extends HttpServlet {
       }
       json += "\"" + comment + "\"";
     }
-    // json += comments;
-    // json += ", \"ling\": ";
-    // json += "\"" + facts.get(1) + "\"";
-    // json += ", \"psych\": ";
-    // json += "\"" + facts.get(2) + "\"";
-    // json += ", \"phil\": ";
-    // json += "\"" + facts.get(3) + "\"";
     json += "]}";
     return json;
   }
