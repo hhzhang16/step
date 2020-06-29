@@ -16,6 +16,8 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -27,25 +29,24 @@ import java.util.ArrayList;
 /** Servlet that returns some example content. Can handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private ArrayList<String> commentHistory = new ArrayList<String>();
+  //private ArrayList<String> commentHistory = new ArrayList<String>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    // PreparedQuery comments = datastore.prepare(query);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Comment");
+    PreparedQuery results = datastore.prepare(query);
+    ArrayList<String> commentHistory = new ArrayList<String>();
+    for (Entity entity : results.asIterable()) {
+      String name = (String) entity.getProperty("name");
+      String text = (String) entity.getProperty("comment");
 
-    // List<Task> tasks = new ArrayList<>();
-    // for (Entity entity : results.asIterable()) {
-    //   long id = entity.getKey().getId();
-    //   String title = (String) entity.getProperty("title");
-    //   long timestamp = (long) entity.getProperty("timestamp");
-
-    //   Task task = new Task(id, title, timestamp);
-    //   tasks.add(task);
-    // }
-    String json = convertToJson(commentHistory);
+      String wholeComment = name + " said: " + text;
+      commentHistory.add(wholeComment);
+    }
+    String commentJson = convertToJson(commentHistory);
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println(commentJson);
   }
 
   @Override
