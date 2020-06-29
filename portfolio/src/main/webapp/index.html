@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="greetSelf()">
+  <body onload="getComments()">
     <div id="content">
       <h1>Hannah's Portfolio</h1>
       <p>This is Hannah's STEP portfolio! <a href="https://github.com/hhzhang16">Here</a> is her GitHub profile and 
@@ -15,8 +15,19 @@
       <div id="greeting-container"></div>
       <p>Hannah is a big fan of food, like the dessert shown below (which was really good):</p>
       <img src="/images/food.jpg">
-      <p>Hannah's major is Symbolic Systems, which ties together</p>
-      <!-- <button onclick="greetSelf()">click here to find out!</button> -->
+      <!-- <p>Hannah's major is Symbolic Systems, which ties together</p>
+      <ul id="symsys-container"></ul> -->
+      <h3>Feel free to leave comments!</h3>
+      <form action="/data" method="POST">
+        <p>Name:</p>
+        <input name="name">
+        <p>Comment:</p>
+        <input name="comment">
+        <br/><br/>
+
+        <input type="submit" />
+      </form>
+      <p>Past comments:</p>
       <ul id="data-container"></ul>
     </div>
   </body>

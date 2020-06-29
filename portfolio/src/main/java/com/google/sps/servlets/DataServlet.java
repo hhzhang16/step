@@ -21,16 +21,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that returns some example content. Can handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  private ArrayList<String> commentHistory = new ArrayList<String>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ArrayList<String> funFacts = createFacts();
-    String factsJson = convertToJson(funFacts);
+    //ArrayList<String> funFacts = createFacts();
+    String json = convertToJson(commentHistory);
     response.setContentType("application/json;");
-    response.getWriter().println(factsJson);
+    response.getWriter().println(json);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String name = request.getParameter("name");
+    String comment = request.getParameter("comment");
+    commentHistory.add(name + "said : \"" + comment "\"");
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/index.html");
   }
 
   /**
@@ -46,19 +57,26 @@ public class DataServlet extends HttpServlet {
   }
 
   /**
-   * Converts an ArrayList<String> into a JSON string using manual String concatentation.
+   * Converts an ArrayList<String> into a JSON string.
    */
-  private String convertToJson(ArrayList<String> facts) {
+  private String convertToJson(ArrayList<String> comments) {
     String json = "{";
-    json += "\"cs\": ";
-    json += "\"" + facts.get(0) + "\"";
-    json += ", \"ling\": ";
-    json += "\"" + facts.get(1) + "\"";
-    json += ", \"psych\": ";
-    json += "\"" + facts.get(2) + "\"";
-    json += ", \"phil\": ";
-    json += "\"" + facts.get(3) + "\"";
-    json += "}";
+    json += "\"history\": [";
+    for (int i = 0; i < comments.size(); i++) {
+      String comment = comments.get(i);
+      if (i != 0) {
+        json += ", ";
+      }
+      json += "\"" + comment + "\"";
+    }
+    // json += comments;
+    // json += ", \"ling\": ";
+    // json += "\"" + facts.get(1) + "\"";
+    // json += ", \"psych\": ";
+    // json += "\"" + facts.get(2) + "\"";
+    // json += ", \"phil\": ";
+    // json += "\"" + facts.get(3) + "\"";
+    json += "]}";
     return json;
   }
 }
