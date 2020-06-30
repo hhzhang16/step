@@ -13,6 +13,11 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -24,36 +29,74 @@ import java.util.ArrayList;
 /** Servlet that returns some example content. Can handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private ArrayList<String> commentHistory = new ArrayList<String>();
+  // Shows all comments by default
+  private int maxCommentNumber = -1;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //ArrayList<String> funFacts = createFacts();
-    String json = convertToJson(commentHistory);
+    int numComments = getMaxNumComments(request);
+    if (numComments == -1) {
+      response.setContentType("text/html");
+      response.getWriter().println("Please enter a nonnegative integer.");
+      return;
+    }
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Comment");
+    PreparedQuery results = datastore.prepare(query);
+    ArrayList<String> commentHistory = new ArrayList<String>();
+    for (Entity entity : results.asIterable()) {
+      String name = (String) entity.getProperty("name");
+      String text = (String) entity.getProperty("comment");
+
+      String wholeComment = name + " said: " + text;
+      commentHistory.add(wholeComment);
+
+      numComments -= 1;
+      if (numComments == 0) break;
+    }
+    String commentJson = convertToJson(commentHistory);
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println(commentJson);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter("name");
     String comment = request.getParameter("comment");
-    commentHistory.add(name + "said : \"" + comment "\"");
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("comment", comment);
+
+    // Store comment permanently
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
 
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");
   }
 
-  /**
-   * Create a list of the majors that SymSys consists of
-   */
-  private ArrayList<String> createFacts() {
-    ArrayList<String> funFacts = new ArrayList<String>();
-    funFacts.add("computer science");
-    funFacts.add("linguistics");
-    funFacts.add("psychology");
-    funFacts.add("philosophy");
-    return funFacts;
+  /** Returns the maximum number of comments entered by the user, or -1 if the choice was invalid. */
+  private int getMaxNumComments(HttpServletRequest request) {
+    // Get the input from the form.
+    String maxCommentsString = request.getParameter("max-comments");
+
+    // Convert the input to an int.
+    int maxComments;
+    try {
+      maxComments = Integer.parseInt(maxCommentsString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + maxCommentsString);
+      return -1;
+    }
+
+    // Check that the input is greater than 0.
+    if (maxComments < 1) {
+      System.err.println("Player choice is out of range: " + maxCommentsString);
+      return -1;
+    }
+
+    return maxComments;
   }
 
   /**
@@ -69,13 +112,6 @@ public class DataServlet extends HttpServlet {
       }
       json += "\"" + comment + "\"";
     }
-    // json += comments;
-    // json += ", \"ling\": ";
-    // json += "\"" + facts.get(1) + "\"";
-    // json += ", \"psych\": ";
-    // json += "\"" + facts.get(2) + "\"";
-    // json += ", \"phil\": ";
-    // json += "\"" + facts.get(3) + "\"";
     json += "]}";
     return json;
   }
