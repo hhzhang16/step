@@ -13,11 +13,9 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random quote to the page.
  */
 function addQuote() {
-//   const greetings =
-//       ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
   const quotes = [
     '"It\'s fine to celebrate success but it is more important to heed the lessons of failure." - Bill Gates',
     '"There are no secrets to success. It is the result of preparation, hard work, and learning from failure." - Colin Powell',
@@ -30,7 +28,7 @@ function addQuote() {
   ];
   console.log("Creating a greeting");
 
-  // Pick a random greeting.
+  // Pick a random quote.
   const quote = quotes[Math.floor(Math.random() * quotes.length)];
   console.log(quote);
 
@@ -39,22 +37,8 @@ function addQuote() {
   quoteContainer.innerText = quote;
 }
 
-function greetSelf() {
-  console.log("fetching data");
-  fetch('/data').then(response => response.json()).then((data) => {
-    console.log(data);
-    console.log(data.cs);
-    const dataListElement = document.getElementById('symsys-container');
-    dataListElement.innerHTML = '';
-    dataListElement.appendChild(createListElement(data.cs));
-    dataListElement.appendChild(createListElement(data.ling));
-    dataListElement.appendChild(createListElement(data.psych));
-    dataListElement.appendChild(createListElement(data.phil));
-  });
-}
-
+/** Display comments on the page, capped at the user's requested maximum */
 function getComments(maxComments) {
-  // if (maxComments == -1)
   fetch('/data?max-comments=' + maxComments.toString()).then(response => response.json()).then((comments) => {
     console.log(comments);
     // Build the list of history entries.
@@ -72,4 +56,10 @@ function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text;
   return liElement;
+}
+
+/** Deletes all comments in the portfolio */
+function deleteComments() {
+  const request = new Request('/delete-data', {method: 'POST'});
+  fetch(request).then(() => getComments(10));
 }

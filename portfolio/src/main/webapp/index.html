@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hannah's Portfolio</title>
+    <title>Hannah Zhang</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
@@ -14,11 +14,11 @@
       <button onclick="addQuote()" class="button">Click here to get a random quote!</button>
       <div id="greeting-container"></div>
       <p>Hannah is a big fan of food, like the dessert shown below (which was really good):</p>
-      <img src="/images/food.jpg">
-      <!-- <p>Hannah's major is Symbolic Systems, which ties together</p>
-      <ul id="symsys-container"></ul> -->
+      <img src="/images/food.jpg" width=600px>
+    </div>
+    <div id="comment-container">
       <h3>Feel free to leave comments!</h3>
-      <form action="/data" method="POST">
+      <form action="/data" class="comment-form" method="POST">
         <p>Name:</p>
         <input name="name">
         <p>Comment:</p>
@@ -27,14 +27,14 @@
 
         <input type="submit" />
       </form>
-      <br/><br/>
+      <br/>
 
-      <p>Show 
+      <p><input type="submit" value="Show" /> 
       <input type="number" id="max-comments" name="max-comments" min="0" value="10" onchange="getComments(this.value)">
-      <input type="submit" />
        comments.</p>
       <p>Past comments:</p>
       <ul id="data-container"></ul>
+      <button onclick="deleteComments()">Delete all comments!</button>
     </div>
   </body>
 </html>

@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
-/** Servlet that returns some example content. Can handle comments data */
+/** Servlet that handles comments data -- adding and displaying comments */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   // Shows all comments by default
