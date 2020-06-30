@@ -48,15 +48,17 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
       String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("comment");
+      String emoji = (String) entity.getProperty("emoji");
 
       String wholeComment = name + " said: " + text;
+      if (!emoji.equals("None")) wholeComment += " " + emoji;
       commentHistory.add(wholeComment);
 
       numComments -= 1;
       if (numComments == 0) break;
     }
     String commentJson = convertToJson(commentHistory);
-    response.setContentType("application/json;");
+    response.setContentType("application/json;charset=UTF-8");
     response.getWriter().println(commentJson);
   }
 
@@ -64,9 +66,12 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter("name");
     String comment = request.getParameter("comment");
+    String emoji = request.getParameter("emoji");
+
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("comment", comment);
+    commentEntity.setProperty("emoji", emoji);
 
     // Store comment permanently
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

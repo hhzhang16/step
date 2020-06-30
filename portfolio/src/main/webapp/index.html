@@ -20,9 +20,27 @@
       <h3>Feel free to leave comments!</h3>
       <form action="/data" class="comment-form" method="POST">
         <p>Name:</p>
-        <input name="name">
+        <input name="name" required>
         <p>Comment:</p>
-        <input name="comment">
+        <input name="comment" required>
+        <p>Emoji (optional):</p>
+        <select name="emoji" id="emoji" value="None">
+            <option value="None">None</option>
+            <option value="😄">😄</option>
+            <option value="😍">😍</option>
+            <option value="😴">😴</option>
+            <option value="🤧">🤧</option>
+            <option value="😫">😫</option>
+            <option value="🥺">🥺</option>
+            <option value="🐕">🐕</option>
+            <option value="🦙">🦙</option>
+            <option value="🙊">🙊</option>
+            <option role="img" aria-label="hamburger" value="🍔">🍔</option>
+            <option value="🥗">🥗</option>
+            <option value="🍑">🍑</option>
+            <option value="🔥">🔥</option>
+            <option value="✨">✨</option>
+        </select>
         <br/><br/>
 
         <input type="submit" />
