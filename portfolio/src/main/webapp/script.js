@@ -53,11 +53,13 @@ function greetSelf() {
   });
 }
 
-function getComments() {
-  fetch('/data').then(response => response.json()).then((comments) => {
+function getComments(maxComments) {
+  // if (maxComments == -1)
+  fetch('/data?max-comments=' + maxComments.toString()).then(response => response.json()).then((comments) => {
     console.log(comments);
     // Build the list of history entries.
     const commentElement = document.getElementById('data-container');
+    commentElement.innerHTML = '';
     comments.history.forEach((line) => {
       console.log(line);
       commentElement.appendChild(createListElement(line));

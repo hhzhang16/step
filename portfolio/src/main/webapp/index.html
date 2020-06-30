@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="getComments()">
+  <body onload="getComments(10)">
     <div id="content">
       <h1>Hannah's Portfolio</h1>
       <p>This is Hannah's STEP portfolio! <a href="https://github.com/hhzhang16">Here</a> is her GitHub profile and 
@@ -27,6 +27,12 @@
 
         <input type="submit" />
       </form>
+      <br/><br/>
+
+      <p>Show 
+      <input type="number" id="max-comments" name="max-comments" min="0" value="10" onchange="getComments(this.value)">
+      <input type="submit" />
+       comments.</p>
       <p>Past comments:</p>
       <ul id="data-container"></ul>
     </div>

@@ -29,10 +29,18 @@ import java.util.ArrayList;
 /** Servlet that returns some example content. Can handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  //private ArrayList<String> commentHistory = new ArrayList<String>();
+  // Shows all comments by default
+  private int maxCommentNumber = -1;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    int numComments = getMaxNumComments(request);
+    if (numComments == -1) {
+      response.setContentType("text/html");
+      response.getWriter().println("Please enter a nonnegative integer.");
+      return;
+    }
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Comment");
     PreparedQuery results = datastore.prepare(query);
@@ -43,6 +51,9 @@ public class DataServlet extends HttpServlet {
 
       String wholeComment = name + " said: " + text;
       commentHistory.add(wholeComment);
+
+      numComments -= 1;
+      if (numComments == 0) break;
     }
     String commentJson = convertToJson(commentHistory);
     response.setContentType("application/json;");
@@ -65,16 +76,27 @@ public class DataServlet extends HttpServlet {
     response.sendRedirect("/index.html");
   }
 
-  /**
-   * Create a list of the majors that SymSys consists of
-   */
-  private ArrayList<String> createFacts() {
-    ArrayList<String> funFacts = new ArrayList<String>();
-    funFacts.add("computer science");
-    funFacts.add("linguistics");
-    funFacts.add("psychology");
-    funFacts.add("philosophy");
-    return funFacts;
+  /** Returns the maximum number of comments entered by the user, or -1 if the choice was invalid. */
+  private int getMaxNumComments(HttpServletRequest request) {
+    // Get the input from the form.
+    String maxCommentsString = request.getParameter("max-comments");
+
+    // Convert the input to an int.
+    int maxComments;
+    try {
+      maxComments = Integer.parseInt(maxCommentsString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + maxCommentsString);
+      return -1;
+    }
+
+    // Check that the input is greater than 0.
+    if (maxComments < 1) {
+      System.err.println("Player choice is out of range: " + maxCommentsString);
+      return -1;
+    }
+
+    return maxComments;
   }
 
   /**
