@@ -3,6 +3,8 @@
   margin-right: auto;
   width: 650px;
   font-family: Gill Sans MT;
+  text-align: center;
+  align-items: center;
 }
 
 #greeting-container {
@@ -13,19 +15,34 @@
   font-family: Verdana;
 }
 
+#comment-container {
+  background-color: gray;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  width: 600px;
+}
+
 #data-container {
-    margin-bottom: 20px;
-    margin-top: 5px;
+  margin-bottom: 20px;
+  margin-top: 5px;
 }
 
 .button {
-    padding: 15px 32px;
-    color: gray;
-    font-size: 30px;
-    font-family: Verdana;
+  padding: 15px 32px;
+  color: gray;
+  font-size: 30px;
+  font-family: Verdana;
 }
 
 .button:hover {
-    background-color: darkgray;
-    color: white;
+  background-color: darkgray;
+  color: white;
+}
+
+.comment-form {
+  padding: 20px;
+  width: 270px;
+  background-color: white;
+  border-color: darkgray;
 }
