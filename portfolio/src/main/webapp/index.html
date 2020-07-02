@@ -18,7 +18,7 @@
     </div>
     <div id="comment-container">
       <h3>Feel free to leave comments!</h3>
-      <form action="/data" class="comment-form" method="POST">
+      <form action="/data" id="comment-form" method="POST">
         <p>Name:</p>
         <input name="name" required>
         <p>Comment:</p>
@@ -42,9 +42,9 @@
             <option value="✨">✨</option>
         </select>
         <br/><br/>
-
         <input type="submit" />
       </form>
+      <div id="login-link"></div>
       <br/>
 
       <p><input type="submit" value="Show" /> 

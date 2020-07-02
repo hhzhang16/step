@@ -39,6 +39,27 @@ function addQuote() {
 
 /** Display comments on the page, capped at the user's requested maximum */
 function getComments(maxComments) {
+  fetch('/login').then(response => response.text()).then((loginLink) => {
+    console.log(loginLink);
+    if (loginLink) {
+      // Show comment form
+      document.getElementById('comment-form').style.display = "block";
+      document.getElementById('login-link').style.display = "none";
+    } else {
+      document.getElementById('comment-form').style.display = "none";
+      const login = document.getElementById('login-link');
+      login.style.display = "block";
+      login.innerHTML = "Login <a href=\"" + loginLink + "\">here</a> to leave a comment!"
+
+      // var element = document.createElement("a");
+      // element.setAttribute("href", loginLink);
+      // element.innerHTML = "Login here to leave a comment!";
+
+      // and append it to where you'd like it to go:
+      //document.body.appendChild(element);
+    }
+  });
+
   fetch('/data?max-comments=' + maxComments.toString()).then(response => response.json()).then((comments) => {
     console.log(comments);
     // Build the list of history entries.
