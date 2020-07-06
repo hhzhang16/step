@@ -57,7 +57,6 @@ public class DataServlet extends HttpServlet {
 
       String commentText = name + " (" + email + ") said: " + text;
       if (!emoji.equals("None")) commentText += " " + emoji;
-      //Comment commentData = new Comment(email, commentText, timestamp);
       commentHistory.add(commentText);
 
       numComments -= 1;
