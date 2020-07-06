@@ -19,6 +19,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -50,10 +52,13 @@ public class DataServlet extends HttpServlet {
       String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("comment");
       String emoji = (String) entity.getProperty("emoji");
+      String email = (String) entity.getProperty("email");
+      long timestamp = (long) entity.getProperty("timestamp");
 
-      String wholeComment = name + " said: " + text;
-      if (!emoji.equals("None")) wholeComment += " " + emoji;
-      commentHistory.add(wholeComment);
+      String commentText = name + " (" + email + ") said: " + text;
+      if (!emoji.equals("None")) commentText += " " + emoji;
+      //Comment commentData = new Comment(email, commentText, timestamp);
+      commentHistory.add(commentText);
 
       numComments -= 1;
       if (numComments == 0) break;
@@ -68,11 +73,17 @@ public class DataServlet extends HttpServlet {
     String name = request.getParameter("name");
     String comment = request.getParameter("comment");
     String emoji = request.getParameter("emoji");
+    String email = "";
+    UserService userService = UserServiceFactory.getUserService();
+    if (userService.isUserLoggedIn()) {
+      email = userService.getCurrentUser().getEmail();
+    }
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("comment", comment);
     commentEntity.setProperty("emoji", emoji);
+    commentEntity.setProperty("email", email);
     commentEntity.setProperty("timestamp", System.currentTimeMillis());
 
     // Store comment permanently
