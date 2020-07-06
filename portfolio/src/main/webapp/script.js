@@ -40,8 +40,9 @@ function addQuote() {
 /** Display comments on the page, capped at the user's requested maximum */
 function getComments(maxComments) {
   fetch('/login').then(response => response.text()).then((loginLink) => {
-    console.log(loginLink);
-    if (loginLink) {
+    console.log("link: " + loginLink);
+    if (loginLink.trim() == "") {
+      console.log("logged in");
       // Show comment form
       document.getElementById('comment-form').style.display = "block";
       document.getElementById('login-link').style.display = "none";
