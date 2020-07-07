@@ -66,10 +66,24 @@ function getComments(maxComments) {
   });
 }
 
+function fetchBlobstoreUrlAndShowForm() {
+  fetch('/blobstore-upload-url')
+    .then((response) => response.text())
+    .then((imageUploadUrl) => {
+      console.log("image upload url: " + imageUploadUrl);
+      const commentForm = document.getElementById('comment-form');
+      commentForm.action = imageUploadUrl;
+    });
+}
+
+
 /** Creates an <li> element containing text. */
-function createListElement(text) {
+function createListElement(comment) {
+  var text = comment[0];
+  const imageUrl = comment[1];
+  if (imageUrl.trim() != "") text += "<img src=\"" + imageUrl + "\" />";
   const liElement = document.createElement('li');
-  liElement.innerText = text;
+  liElement.innerHTML = text;
   return liElement;
 }
 

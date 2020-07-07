@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="getComments(10)">
+  <body onload="getComments(10); fetchBlobstoreUrlAndShowForm();">
     <div id="content">
       <h1>Hannah's Portfolio</h1>
       <p>This is Hannah's STEP portfolio! <a href="https://github.com/hhzhang16">Here</a> is her GitHub profile and 
@@ -18,7 +18,7 @@
     </div>
     <div id="comment-container">
       <h3>Feel free to leave comments!</h3>
-      <form action="/data" id="comment-form" method="POST">
+      <form id="comment-form" method="POST" enctype="multipart/form-data">
         <p>Name:</p>
         <input name="name" required>
         <p>Comment:</p>
@@ -41,6 +41,8 @@
             <option value="🔥">🔥</option>
             <option value="✨">✨</option>
         </select>
+        <br/><br/>
+        <input type="file" name="image">
         <br/><br/>
         <input type="submit" />
       </form>
