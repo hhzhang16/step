@@ -18,7 +18,7 @@
     </div>
     <div id="comment-container">
       <h3>Feel free to leave comments!</h3>
-      <form action="/data" class="comment-form" method="POST">
+      <form action="/data" id="comment-form" method="POST">
         <p>Name:</p>
         <input name="name" required>
         <p>Comment:</p>
@@ -42,15 +42,15 @@
             <option value="✨">✨</option>
         </select>
         <br/><br/>
-
         <input type="submit" />
       </form>
+      <div id="login-link"></div>
       <br/>
 
       <p><input type="submit" value="Show" /> 
       <input type="number" id="max-comments" name="max-comments" min="0" value="10" onchange="getComments(this.value)">
        comments.</p>
-      <p>Past comments:</p>
+      <p>Past comments (most recent first):</p>
       <ul id="data-container"></ul>
       <button onclick="deleteComments()">Delete all comments!</button>
     </div>

@@ -28,6 +28,13 @@
   margin-top: 5px;
 }
 
+#comment-form {
+  padding: 20px;
+  width: 270px;
+  background-color: white;
+  border-color: darkgray;
+}
+
 .button {
   padding: 15px 32px;
   color: gray;
@@ -38,11 +45,4 @@
 .button:hover {
   background-color: darkgray;
   color: white;
-}
-
-.comment-form {
-  padding: 20px;
-  width: 270px;
-  background-color: white;
-  border-color: darkgray;
 }
