@@ -94,7 +94,12 @@ function deleteComments() {
 
 /** Creates a map and adds it to the page. */
 function createMap() {
+  const lakeLocation = {lat: 39.6014, lng: -107.1918};
   const map = new google.maps.Map(
       document.getElementById('map'),
-      {center: {lat: 39.6014, lng: -107.1918}, zoom: 14});
+      {center: lakeLocation, zoom: 14});
+  var hangingLakeMarker = new google.maps.Marker({
+    position: lakeLocation,
+    map: MimeTypeArray
+  });
 }

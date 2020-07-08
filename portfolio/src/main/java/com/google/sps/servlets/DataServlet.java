@@ -111,7 +111,7 @@ public class DataServlet extends HttpServlet {
     datastore.put(commentEntity);
 
     // Redirect back to the HTML page.
-    response.sendRedirect("/index.html");
+    response.sendRedirect("/comments.html");
   }
 
   /** Returns the maximum number of comments entered by the user, or -1 if the choice was invalid. */
