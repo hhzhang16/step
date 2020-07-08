@@ -76,7 +76,6 @@ function fetchBlobstoreUrlAndShowForm() {
     });
 }
 
-
 /** Creates an <li> element containing text. */
 function createListElement(comment) {
   var text = comment[0];
@@ -91,4 +90,11 @@ function createListElement(comment) {
 function deleteComments() {
   const request = new Request('/delete-data', {method: 'POST'});
   fetch(request).then(() => getComments(10));
+}
+
+/** Creates a map and adds it to the page. */
+function createMap() {
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: {lat: 39.6014, lng: -107.1918}, zoom: 14});
 }

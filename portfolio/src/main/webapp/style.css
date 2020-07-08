@@ -1,31 +1,56 @@
+#header {
+  font-family: 'Gill Sans';
+  text-align: center;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
-  font-family: Gill Sans MT;
+  font-family: 'Gill Sans';
+  text-align: center;
+  align-items: center;
+  display: flex;
+}
+
+#bio {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
   text-align: center;
   align-items: center;
 }
 
 #greeting-container {
   margin-top: 20px;
-  width: 500px;
+  margin-left: 100px;
+  margin-right: 100px;
   background-color: azure;
   color: darkolivegreen;
   font-family: Verdana;
 }
 
+#map-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  align-items: center;
+}
+
+#map {
+  border: thin solid black;
+  height: 500px;
+  width: 500px;
+}
+
 #comment-container {
-  background-color: gray;
+  background-color: darkgray;
   margin-left: auto;
   margin-right: auto;
   padding: 10px;
   width: 600px;
-}
-
-#data-container {
-  margin-bottom: 20px;
-  margin-top: 5px;
+  margin-top: 30px;
 }
 
 #comment-form {
@@ -35,11 +60,17 @@
   border-color: darkgray;
 }
 
+#data-container {
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+
 .button {
   padding: 15px 32px;
   color: gray;
   font-size: 30px;
   font-family: Verdana;
+  width: 300px;
 }
 
 .button:hover {
