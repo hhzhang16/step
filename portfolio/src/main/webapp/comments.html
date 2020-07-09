@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hannah's Porfolio</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpLXtJuVWy0Xq5ovYjTWw_4E9fidfyIKw"></script>
+    <script src="script.js"></script>
+  </head>
+  <body onload="getComments(10); fetchBlobstoreUrlAndShowForm(); createMap();">
+    <div id="content">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="/index.html">Hannah's Portfolio</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/nature.html">Nature</a></li>
+            <li class="active"><a href="/comments.html">Comments</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div id="header">
+        <h1>Comments</h1>
+      </div>
+      <div id="comment-container">
+        <h3>Feel free to leave comments!</h3>
+        <form id="comment-form" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
+          <p>Name:</p>
+          <input name="name" required>
+          <p>Comment:</p>
+          <input name="comment" required>
+          <p>Emoji (optional):</p>
+          <select name="emoji" id="emoji" value="None">
+              <option value="None">None</option>
+              <option value="😄">😄</option>
+              <option value="😍">😍</option>
+              <option value="😴">😴</option>
+              <option value="🤧">🤧</option>
+              <option value="😫">😫</option>
+              <option value="🥺">🥺</option>
+              <option value="🐕">🐕</option>
+              <option value="🦙">🦙</option>
+              <option value="🙊">🙊</option>
+              <option role="img" aria-label="hamburger" value="🍔">🍔</option>
+              <option value="🥗">🥗</option>
+              <option value="🍑">🍑</option>
+              <option value="🔥">🔥</option>
+              <option value="✨">✨</option>
+          </select>
+          <br/><br/>
+          <input type="file" name="image">
+          <br/><br/>
+          <input type="submit" />
+        </form>
+        <div id="login-link"></div>
+        <br/><br/>
+
+        <p><input type="submit" value="Show" /> 
+        <input type="number" id="max-comments" name="max-comments" min="0" value="10" onchange="getComments(this.value)">
+        comments.</p>
+        <p><b>Past comments (most recent first):</b></p>
+        <ul id="data-container"></ul>
+        <button onclick="deleteComments()">Delete all comments!</button>
+      </div>
+    </div> 
+  </body>
+</html>

@@ -1,31 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Noticia+Text&display=swap');
+
 #content {
   margin-left: auto;
   margin-right: auto;
+  font-family: 'Noticia Text', serif;
+  text-align: center;
+  align-items: center;
+  margin-bottom: 50px;
+  background-color: aliceblue;
+}
+
+#bio {
+  margin-left: auto;
+  margin-right: auto;
   width: 650px;
-  font-family: Gill Sans MT;
   text-align: center;
   align-items: center;
 }
 
 #greeting-container {
-  margin-top: 20px;
-  width: 500px;
-  background-color: azure;
+  margin-top: 10px;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-bottom: 20px;
+  background-color: blanchedalmond;
   color: darkolivegreen;
-  font-family: Verdana;
+  font-size: 20px;
+}
+
+#map-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 650px;
+  align-items: center;
+  text-align: center;
+}
+
+#map {
+  border: thin solid black;
+  height: 500px;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 #comment-container {
-  background-color: gray;
+  background-color: darkgray;
   margin-left: auto;
   margin-right: auto;
   padding: 10px;
   width: 600px;
-}
-
-#data-container {
-  margin-bottom: 20px;
-  margin-top: 5px;
+  margin-top: 15px;
+  text-align: left;
+  align-items: center;
 }
 
 #comment-form {
@@ -35,11 +61,17 @@
   border-color: darkgray;
 }
 
+#data-container {
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+
 .button {
   padding: 15px 32px;
   color: gray;
-  font-size: 30px;
+  font-size: 25px;
   font-family: Verdana;
+  width: 400px;
 }
 
 .button:hover {

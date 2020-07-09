@@ -66,10 +66,23 @@ function getComments(maxComments) {
   });
 }
 
+function fetchBlobstoreUrlAndShowForm() {
+  fetch('/blobstore-upload-url')
+    .then((response) => response.text())
+    .then((imageUploadUrl) => {
+      console.log("image upload url: " + imageUploadUrl);
+      const commentForm = document.getElementById('comment-form');
+      commentForm.action = imageUploadUrl;
+    });
+}
+
 /** Creates an <li> element containing text. */
-function createListElement(text) {
+function createListElement(comment) {
+  var text = comment[0];
+  const imageUrl = comment[1];
+  if (imageUrl.trim() != "") text += "<img src=\"" + imageUrl + "\" />";
   const liElement = document.createElement('li');
-  liElement.innerText = text;
+  liElement.innerHTML = text;
   return liElement;
 }
 
@@ -77,4 +90,16 @@ function createListElement(text) {
 function deleteComments() {
   const request = new Request('/delete-data', {method: 'POST'});
   fetch(request).then(() => getComments(10));
+}
+
+/** Creates a map and adds it to the page. */
+function createMap() {
+  const lakeLocation = {lat: 39.6014, lng: -107.1918};
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: lakeLocation, zoom: 14});
+  var hangingLakeMarker = new google.maps.Marker({
+    position: lakeLocation,
+    map: MimeTypeArray
+  });
 }
