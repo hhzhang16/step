@@ -105,10 +105,9 @@ function createMap() {
 }
 
 google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
-
+google.charts.setOnLoadCallback(drawPieChart);
 /** Creates a chart and adds it to the page. */
-function drawChart() {
+function drawPieChart() {
   const data = new google.visualization.DataTable();
   data.addColumn('string', 'Flavor');
   data.addColumn('number', 'Count');
@@ -127,11 +126,31 @@ function drawChart() {
 
   const options = {
     'title': "America's Favorite Pies",
-    'width':500,
-    'height':400
   };
 
   const chart = new google.visualization.PieChart(
-      document.getElementById('chart-container'));
+      document.getElementById('pie-chart'));
+  chart.draw(data, options);
+}
+
+google.charts.setOnLoadCallback(drawDonutChart);
+function drawDonutChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Flavor', 'Count'],
+    ['Plain',     14.74],
+    ['Glazed',      50.79],
+    ['Chocolate', 40.26],
+    ['Frosted with sprinkles', 18.68],
+    ['Jelly-filled', 25],
+    ['Custard-filled',  33.68],
+    ['Other',    10.26]
+  ]);
+
+  var options = {
+    title: 'Favorite Donuts',
+    pieHole: 0.4,
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('donut-chart'));
   chart.draw(data, options);
 }

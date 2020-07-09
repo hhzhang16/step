@@ -66,6 +66,21 @@
   margin-top: 5px;
 }
 
+#pie-chart {
+  float: left;
+}
+
+#donut-chart {
+  float: right;
+}
+
+.chart {
+  position:relative;
+  border: 1px solid #ccc;
+  width: 50%;
+  height: 400px;
+}
+
 .button {
   padding: 15px 32px;
   color: gray;
