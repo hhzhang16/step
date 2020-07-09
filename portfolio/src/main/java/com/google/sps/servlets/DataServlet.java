@@ -21,6 +21,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.sps.data.Comment;
 
 import com.google.appengine.api.blobstore.BlobInfo;
 import com.google.appengine.api.blobstore.BlobInfoFactory;
@@ -60,7 +61,7 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
-    ArrayList<ArrayList<String>> commentHistory = new ArrayList<ArrayList<String>>();
+    ArrayList<Comment> commentHistory = new ArrayList<Comment>();
     for (Entity entity : results.asIterable()) {
       String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("comment");
@@ -71,10 +72,7 @@ public class DataServlet extends HttpServlet {
 
       String commentText = name + " (" + email + ") said: " + text;
       if (!emoji.equals("None")) commentText += " " + emoji;
-      //if (!imageUrl.equals(null)) commentText += "<img src=\"" + imageUrl + "\" />";
-      ArrayList<String> commentWithImage = new ArrayList<String>();
-      commentWithImage.add(commentText);
-      commentWithImage.add(imageUrl);
+      Comment commentWithImage = new Comment(commentText, imageUrl);
       commentHistory.add(commentWithImage);
 
       numComments -= 1;
@@ -89,12 +87,10 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter("name");
     String comment = request.getParameter("comment");
-    String emoji = request.getParameter("emoji");
+    String emoji = new String (request.getParameter("emoji").getBytes ("iso-8859-1"), "UTF-8");
     String email = "";
     UserService userService = UserServiceFactory.getUserService();
-    if (userService.isUserLoggedIn()) {
-      email = userService.getCurrentUser().getEmail();
-    }
+    if (userService.isUserLoggedIn()) email = userService.getCurrentUser().getEmail();
     // Get the URL of the image that the user uploaded to Blobstore.
     String imageUrl = getUploadedFileUrl(request, "image");
 
@@ -173,16 +169,15 @@ public class DataServlet extends HttpServlet {
   /**
    * Converts a list of comments into a JSON string.
    */
-  private String convertToJson(ArrayList<ArrayList<String>> comments) {
+  private String convertToJson(ArrayList<Comment> comments) {
     String json = "{";
     json += "\"history\": [";
     for (int i = 0; i < comments.size(); i++) {
-      ArrayList<String> commentWithImage = comments.get(i);
+      Comment commentWithImage = comments.get(i);
       if (i != 0) json += ", ";
-      json += "[\"" + commentWithImage.get(0) + "\", \"";
-      String imageUrl = commentWithImage.get(1);
-      if (imageUrl == null) json += "";
-      else json += imageUrl;
+      json += "[\"" + commentWithImage.commentText + "\", \"";
+      String imageUrl = commentWithImage.imageUrl;
+      if (imageUrl != null) json += imageUrl;
       json += "\"]";
     }
     json += "]}";
