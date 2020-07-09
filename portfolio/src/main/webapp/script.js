@@ -103,3 +103,35 @@ function createMap() {
     map: MimeTypeArray
   });
 }
+
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+/** Creates a chart and adds it to the page. */
+function drawChart() {
+  const data = new google.visualization.DataTable();
+  data.addColumn('string', 'Flavor');
+  data.addColumn('number', 'Count');
+        data.addRows([
+          ['Pecan', 17],
+          ['Pumpkin', 36],
+          ['Apple', 14],
+          ['Sweet potato', 10],
+          ['Chocolate', 9],
+          ['Lemon meringue', 4],
+          ['Cherry', 3],
+          ['Blueberry', 3],
+          ['Strawberry', 2],
+          ['Other', 2]
+        ]);
+
+  const options = {
+    'title': "America's Favorite Pies",
+    'width':500,
+    'height':400
+  };
+
+  const chart = new google.visualization.PieChart(
+      document.getElementById('chart-container'));
+  chart.draw(data, options);
+}
