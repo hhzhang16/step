@@ -74,6 +74,10 @@
   float: right;
 }
 
+#happiness-chart {
+  clear: both;
+}
+
 .chart {
   position:relative;
   border: 1px solid #ccc;

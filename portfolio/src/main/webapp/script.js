@@ -104,25 +104,28 @@ function createMap() {
   });
 }
 
-google.charts.load('current', {'packages':['corechart']});
+google.charts.load('current', {
+  'packages':['corechart'],
+  'mapsApiKey': 'AIzaSyBpLXtJuVWy0Xq5ovYjTWw_4E9fidfyIKw'
+});
 google.charts.setOnLoadCallback(drawPieChart);
 /** Creates a chart and adds it to the page. */
 function drawPieChart() {
   const data = new google.visualization.DataTable();
   data.addColumn('string', 'Flavor');
   data.addColumn('number', 'Count');
-        data.addRows([
-          ['Pecan', 17],
-          ['Pumpkin', 36],
-          ['Apple', 14],
-          ['Sweet potato', 10],
-          ['Chocolate', 9],
-          ['Lemon meringue', 4],
-          ['Cherry', 3],
-          ['Blueberry', 3],
-          ['Strawberry', 2],
-          ['Other', 2]
-        ]);
+  data.addRows([
+    ['Pecan', 17],
+    ['Pumpkin', 36],
+    ['Apple', 14],
+    ['Sweet potato', 10],
+    ['Chocolate', 9],
+    ['Lemon meringue', 4],
+    ['Cherry', 3],
+    ['Blueberry', 3],
+    ['Strawberry', 2],
+    ['Other', 2]
+  ]);
 
   const options = {
     'title': "America's Favorite Pies",
@@ -153,4 +156,26 @@ function drawDonutChart() {
 
   var chart = new google.visualization.PieChart(document.getElementById('donut-chart'));
   chart.draw(data, options);
+}
+
+google.charts.setOnLoadCallback(drawHappinessChart);
+/** Fetches data on happiness of countries and uses it to create a chart. */
+function drawHappinessChart() {
+  fetch('/happiness-data').then(response => response.json())
+  .then((happiness) => {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Country');
+    data.addColumn('number', 'Score');
+    Object.keys(happiness).forEach((country) => {
+      data.addRow([country, happiness[country]]);
+    });
+
+    const options = {
+      'title': '2019 Happiness Score of Each Country',
+    };
+
+    const chart = new google.visualization.GeoChart(
+      document.getElementById('happiness-chart'));
+    chart.draw(data, options);
+  });
 }
