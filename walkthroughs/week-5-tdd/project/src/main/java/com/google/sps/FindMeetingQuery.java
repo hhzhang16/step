@@ -35,12 +35,16 @@ public final class FindMeetingQuery {
     return potentialTimesAll;
   }
 
+  /** Find all event times that all attendees are able to attend
+    */
   private Collection<TimeRange> findPotentialTimes(Collection<Event> events, Collection<String> attendees, int duration) {
     ArrayList<TimeRange> eventTimes = attendeeEventTimes(events, attendees);
     ArrayList<TimeRange> unavailableTimes = mergeOverlappingTimes(eventTimes);
     return findDurationsAvailable(unavailableTimes, duration);
   }
 
+  /** Find all of the event times that attendees have throughout the day
+    */
   private ArrayList<TimeRange> attendeeEventTimes(Collection<Event> events, Collection<String> attendees) {
     ArrayList<TimeRange> eventTimes = new ArrayList<TimeRange>();
     for (Event event : events) {
@@ -77,8 +81,9 @@ public final class FindMeetingQuery {
     return unavailableTimes;
   }
 
+  /** Find all available times that can fit the requested duration
+    */
   private Collection<TimeRange> findDurationsAvailable(ArrayList<TimeRange> unavailableTimes, int duration) {
-    // Add all available times that can fit the requested duration
     Collection<TimeRange> potentialTimes = new ArrayList<TimeRange>();
     int startTime = TimeRange.START_OF_DAY;
     int currentEndTime = startTime + duration;
