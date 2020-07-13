@@ -25,38 +25,59 @@ import java.util.Arrays;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> requiredAttendees = request.getAttendees();
+    Collection<String> allAttendees = new HashSet<String>(requiredAttendees);
+    allAttendees.addAll(request.getOptionalAttendees());
     int duration = (int) request.getDuration();
     
+    Collection<TimeRange> potentialTimesAll = findPotentialTimes(events, allAttendees, duration);
+    Collection<TimeRange> potentialTimesOnlyRequired = findPotentialTimes(events, requiredAttendees, duration);
+    if (potentialTimesAll.isEmpty() && !requiredAttendees.isEmpty()) return potentialTimesOnlyRequired;
+    return potentialTimesAll;
+  }
+
+  private Collection<TimeRange> findPotentialTimes(Collection<Event> events, Collection<String> attendees, int duration) {
+    ArrayList<TimeRange> eventTimes = attendeeEventTimes(events, attendees);
+    ArrayList<TimeRange> unavailableTimes = mergeOverlappingTimes(eventTimes);
+    return findDurationsAvailable(unavailableTimes, duration);
+  }
+
+  private ArrayList<TimeRange> attendeeEventTimes(Collection<Event> events, Collection<String> attendees) {
     ArrayList<TimeRange> eventTimes = new ArrayList<TimeRange>();
     for (Event event : events) {
-      Collection<String> intersectSet = new HashSet<String>(requiredAttendees);
+      Collection<String> intersectSet = new HashSet<String>(attendees);
       intersectSet.retainAll(event.getAttendees());
       // Someone in this event is also required in the requested event
       if (!intersectSet.isEmpty()) {
           eventTimes.add(event.getWhen());
         }
     }
+    return eventTimes;
+  }
 
-    // Combine overlapping ranges to hold a collection of non-overlapping unavailable times
+  /* Combine overlapping ranges to hold a collection of non-overlapping unavailable times */
+  private ArrayList<TimeRange> mergeOverlappingTimes(ArrayList<TimeRange> eventTimes) {
     Collections.sort(eventTimes, TimeRange.ORDER_BY_START);
     ArrayList<TimeRange> unavailableTimes = new ArrayList<TimeRange>();
-    if (!eventTimes.isEmpty()) {
-      TimeRange earlierRange = eventTimes.get(0);
-      for (int i = 1; i < eventTimes.size(); i++) {
-        TimeRange laterRange = eventTimes.get(i);
-        if (earlierRange.overlaps(laterRange)) { 
-          // Combine the two ranges
-          int newEnd = (earlierRange.end() > laterRange.end()) ? earlierRange.end() : laterRange.end();
-          earlierRange = TimeRange.fromStartEnd(earlierRange.start(), newEnd, false);
-        } else { 
-          // We have found a complete unavailable time range
-          unavailableTimes.add(earlierRange);
-          earlierRange = laterRange;
-        }
+    if (eventTimes.isEmpty()) return unavailableTimes;
+    
+    TimeRange earlierRange = eventTimes.get(0);
+    for (int i = 1; i < eventTimes.size(); i++) {
+      TimeRange laterRange = eventTimes.get(i);
+      if (earlierRange.overlaps(laterRange)) { 
+        // Combine the two ranges
+        int newEnd = (earlierRange.end() > laterRange.end()) ? earlierRange.end() : laterRange.end();
+        earlierRange = TimeRange.fromStartEnd(earlierRange.start(), newEnd, false);
+      } else { 
+        // We have found a complete unavailable time range
+        unavailableTimes.add(earlierRange);
+        earlierRange = laterRange;
       }
-      unavailableTimes.add(earlierRange);
     }
+    unavailableTimes.add(earlierRange);
+    return unavailableTimes;
+  }
 
+  private Collection<TimeRange> findDurationsAvailable(ArrayList<TimeRange> unavailableTimes, int duration) {
     // Add all available times that can fit the requested duration
     Collection<TimeRange> potentialTimes = new ArrayList<TimeRange>();
     int startTime = TimeRange.START_OF_DAY;
@@ -75,5 +96,3 @@ public final class FindMeetingQuery {
     return potentialTimes;
   }
 }
-
-//Someone is busy at the time of this event -- the requested event cannot be in this range
