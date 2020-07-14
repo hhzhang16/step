@@ -31,7 +31,9 @@ public final class FindMeetingQuery {
     
     Collection<TimeRange> potentialTimesAll = findPotentialTimes(events, allAttendees, duration);
     Collection<TimeRange> potentialTimesOnlyRequired = findPotentialTimes(events, requiredAttendees, duration);
-    if (potentialTimesAll.isEmpty() && !requiredAttendees.isEmpty()) return potentialTimesOnlyRequired;
+    if (potentialTimesAll.isEmpty() && !requiredAttendees.isEmpty()) {
+        return potentialTimesOnlyRequired;
+    }
     return potentialTimesAll;
   }
 
@@ -52,8 +54,8 @@ public final class FindMeetingQuery {
       intersectSet.retainAll(event.getAttendees());
       // Someone in this event is also required in the requested event
       if (!intersectSet.isEmpty()) {
-          eventTimes.add(event.getWhen());
-        }
+        eventTimes.add(event.getWhen());
+      }
     }
     return eventTimes;
   }
@@ -62,7 +64,9 @@ public final class FindMeetingQuery {
   private ArrayList<TimeRange> mergeOverlappingTimes(ArrayList<TimeRange> eventTimes) {
     Collections.sort(eventTimes, TimeRange.ORDER_BY_START);
     ArrayList<TimeRange> unavailableTimes = new ArrayList<TimeRange>();
-    if (eventTimes.isEmpty()) return unavailableTimes;
+    if (eventTimes.isEmpty()) {
+      return unavailableTimes;
+    }
     
     TimeRange earlierRange = eventTimes.get(0);
     for (int i = 1; i < eventTimes.size(); i++) {
