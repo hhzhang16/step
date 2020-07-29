@@ -105,7 +105,7 @@ function createMap() {
 }
 
 google.charts.load('current', {
-  'packages':['corechart'],
+  'packages':['corechart', 'geochart'],
   'mapsApiKey': 'AIzaSyBpLXtJuVWy0Xq5ovYjTWw_4E9fidfyIKw'
 });
 google.charts.setOnLoadCallback(drawPieChart);
@@ -140,13 +140,13 @@ google.charts.setOnLoadCallback(drawDonutChart);
 function drawDonutChart() {
   var data = google.visualization.arrayToDataTable([
     ['Flavor', 'Count'],
-    ['Plain',     14.74],
-    ['Glazed',      50.79],
+    ['Plain', 14.74],
+    ['Glazed', 50.79],
     ['Chocolate', 40.26],
     ['Frosted with sprinkles', 18.68],
     ['Jelly-filled', 25],
-    ['Custard-filled',  33.68],
-    ['Other',    10.26]
+    ['Custard-filled', 33.68],
+    ['Other', 10.26]
   ]);
 
   var options = {
